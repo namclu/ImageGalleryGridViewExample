@@ -2,6 +2,8 @@ package com.namclu.android.imagegallerygridviewexample;
 
 /**
  * Created by namlu on 7/14/2017.
+ *
+ * GridItem represents a single Grid object
  */
 
 public class GridItem {
