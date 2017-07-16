@@ -1,15 +1,26 @@
 package com.namclu.android.imagegallerygridviewexample;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.GridView;
+import android.widget.ProgressBar;
+
+import java.util.ArrayList;
 
 public class GridViewActivity extends AppCompatActivity {
+    private static final String TAG = GridViewActivity.class.getSimpleName();
+    private GridView mGridView;
+    private ProgressBar mProgressBar;
+    private ArrayList<GridItem> mGridData;
+    private GridViewAdapter mGridViewAdapter;
+    private String FEED_URL = "http://stacktips.com/?json=get_recent_posts&count=45";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +37,19 @@ public class GridViewActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        // Initialize views
+        mGridView = (GridView) findViewById(R.id.grid_view);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        // Initialize with empty data
+        mGridData = new ArrayList<>();
+        mGridViewAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, mGridData);
+        mGridView.setAdapter(mGridViewAdapter);
+
+        // Start download
+        new AsyncHttpTask().execute(FEED_URL);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -49,4 +73,16 @@ public class GridViewActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /*
+    * Download data asynchronously
+    * */
+    public class AsyncHttpTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            return null;
+        }
+    }
+
 }
