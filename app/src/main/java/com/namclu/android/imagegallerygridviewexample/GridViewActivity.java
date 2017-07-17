@@ -12,6 +12,15 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class GridViewActivity extends AppCompatActivity {
@@ -81,7 +90,40 @@ public class GridViewActivity extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(String... params) {
+            Integer result = 0;
+            HttpURLConnection httpURLConnection = null;
+            InputStream inputStream = null;
+
+            try {
+                URL url = new URL(FEED_URL);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("GET");
+                result = httpURLConnection.getResponseCode();
+
+                if (result == 200) {
+                    inputStream = httpURLConnection.getInputStream();
+
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return null;
+        }
+    }
+
+    private void parseResults(String results) {
+        try {
+            JSONObject response = new JSONObject(results);
+            JSONArray posts = response.getJSONArray("posts");
+            GridItem gridItem;
+
+            
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
